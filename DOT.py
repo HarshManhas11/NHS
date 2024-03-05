@@ -31,12 +31,12 @@ def takecommand():
       r = sr.Recognizer()
       with sr. microphone() as source:
          print("listening.... ")
-         r.pause_threshold = 1  # second of non audio before a phase is consider complete
+         r.pause_threshold = 1# second of non audio before a phase is consider complete
          audio = r.listen(source)
 
          try:
             print("Recognizing..")
-            Query = r.recognize_google(audio,Language='en-in')
+            query = r.recognize_google(audio,Language='en-in')
             print(f"user said: {query}\n")
 
          except Exception as e:
@@ -49,10 +49,11 @@ if __name__ == "__main__":
    wishMe()
    while True:
      query = takecommand().lower()
-   if'wikipedia' in querry:
+   if'wikipedia' in querry: #logic for executing tasks base on querry
          query = query.replace("wikipedia","")
          results =wikipedia.summary(query,sentences=2)
          speak("according to wikipedia")
+         print(results)
          speak(results)
    
 
