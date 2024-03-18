@@ -4,7 +4,6 @@ import datetime
 import wikipedia
 import webbrowser
 import os
-import smtplib
 import random
 
 engine = pyttsx3.init('sapi5')
@@ -46,21 +45,27 @@ def takecommand():
             print("Say that again please ...")
             return "None" 
         return query    
-def sendEmail(to,content):
-     server = smtplib.SMTP('smtp.gmail.com', 587)
-     server.ehlo()
-     server.starttls()
-     server.login('harshmanhas203@gmail.com','sheetal11980')
-     server.sendmail('harshmanhas203@gmail.com',to,content)
-     server.close()
-
+# def sendEmail(to,content):
+#      server = smtplib.SMTP('smtp.gmail.com', 587)
+#      server.ehlo()
+#      server.starttls()
+#      server.login('harshmanhas203@gmail.com','sheetal11980')
+#      server.sendmail('harshmanhas203@gmail.com',to,content)
+#      server.close()
+def stopExecuation(query):
+    stop_keyword=['stop','exit','quit','terminate']
+    return any(keyword in query for keyword in stop_keyword)
     
 
 if __name__ == "__main__":
     wishMe()
-    #while True:
-    if 1:
+    while True:
+
         query = takecommand().lower()
+
+        if stopExecuation(query):
+            speak("stopping execution. goodbaye!")
+            break
         if 'wikipedia' in query:
             speak ('searching wkipedia...')
             query = query.replace("wikipedia", " ")
@@ -91,16 +96,35 @@ if __name__ == "__main__":
             strTime=datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"the time is {strTime}")   
 
-       # elif'open code' in query:
-         #   codePath"C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
-         #   os.startfile(codePath)   #
-        elif 'email to navi' in query:
-            try:
-                speak("what should i say?") 
-                content = takecommand ()
-                to ="harshmanhas203@gmail.com"
-                sendEmail(to,content)
-                speak("Email has been sent!")
-            except Exception as e:
-                print(e)
-                speak("Sorry sir i am not able to send this email ")
+        elif'open code' in query:
+           codePath ='C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe'
+           os.startfile(codePath) 
+        
+        elif'open ready' in query:
+           readyPath = "C:\\Program Files\\Lenovo\\Ready For Assistant\\ReadyFor.exe"
+           os.startfile(readyPath)
+           
+        elif'open game' in query:
+            genshinpath = "C:\\Program Files\\Genshin Impact\\launcher.exe" 
+            os.startfile(genshinpath)  
+        elif'open brave' in query:
+            bravepath = "C:\\Users\\Lenovo\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe" 
+            os.startfile(bravepath)  
+        elif'open photos' in query:
+            photopath = "C:\\Users\\Lenovo\\OneDrive\\Pictures\\Saved Pictures"
+            os.startfile(photopath)  
+        # elif'open media player' in query:
+        #     mediapath = "C:\\Program Files (x86)\\K-Lite Codec Pack\\Media Player Classic\\mpc-hc.exe"
+        #     os.startfile(mediapath)  
+         
+        # elif 'email to navi' in query:
+        #     try:
+        #         speak("what should i say?") 
+        #         content = takecommand ()
+        #         to ="harshmanhas203@gmail.com"
+        #         sendEmail(to,content)
+        #         speak("Email has been sent!")
+        #     except Exception as e:
+        #         print(e)
+        #         speak("Sorry sir i am not able to send this email ")
+           

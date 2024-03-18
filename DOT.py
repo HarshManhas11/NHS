@@ -2,61 +2,122 @@ import pyttsx3
 import speech_recognition as sr
 import datetime 
 import wikipedia
+import webbrowser
+import os
+import random
 
-engin = pyttsx3.init('sapi5')
-voices = engin.getProperty('voices')
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
 #print(voices[1].id)
-engin.setProperty('voice',voices[1].id)
-
+engine.setProperty('voice', voices[0].id)
 
 def speak(audio):
-    engin.say(audio)
-    engin.runAndWait()
+    engine.say(audio)
+    engine.runAndWait()
+
 def wishMe():
-   hour = int(datetime.datetime.now().hour)
-   if hour>=0 and hour<12:
-      speak("Good Morning!") 
+    hour = int(datetime.datetime.now().hour)
+    if 0 <= hour < 12:
+        speak("Good Morning!") 
 
-   elif hour>=12 and hour<18:
-       speak("Good Afternoon")
-   else:
-       speak("good evening")
+    elif 12 <= hour < 18:
+        speak("Good Afternoon")
+    else:
+        speak("Good Evening")
 
+    speak("I am DOT sir, How may I help you")
 
-   speak("I am DOT sir, How may i help you")
-   
 def takecommand():
-      #it take microphone input from the user and return string output
+    # It takes microphone input from the user and returns string output
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening.... ")
+        r.pause_threshold = 1 # second of non-audio before a phrase is considered complete
+        audio = r.listen(source)
 
-      r = sr.Recognizer()
-      with sr. microphone() as source:
-         print("listening.... ")
-         r.pause_threshold = 1# second of non audio before a phase is consider complete
-         audio = r.listen(source)
-
-         try:
+        try:
             print("Recognizing..")
-            query = r.recognize_google(audio,Language='en-in')
-            print(f"user said: {query}\n")
+            query = r.recognize_google(audio, language='en-in')
+            print(f"User said: {query}\n")
 
-         except Exception as e:
-            #print(e)
-            print("say that again please ...")
+        except Exception as e:
+            # print(e)
+            print("Say that again please ...")
             return "None" 
-         return query    
+        return query    
+# def sendEmail(to,content):
+#      server = smtplib.SMTP('smtp.gmail.com', 587)
+#      server.ehlo()
+#      server.starttls()
+#      server.login('harshmanhas203@gmail.com','sheetal11980')
+#      server.sendmail('harshmanhas203@gmail.com',to,content)
+#      server.close()
+def stopExecuation(query):
+    stop_keyword=['stop','exit','quit','terminate']
+    return any(keyword in query for keyword in stop_keyword)
+    
 
 if __name__ == "__main__":
-   wishMe()
-   while True:
-     query = takecommand().lower()
-   if'wikipedia' in querry: #logic for executing tasks base on querry
-         query = query.replace("wikipedia","")
-         results =wikipedia.summary(query,sentences=2)
-         speak("according to wikipedia")
-         print(results)
-         speak(results)
-   
+    wishMe()
+    while True:
 
+        query = takecommand().lower()
+
+        if stopExecuation(query):
+            speak("stopping execution. goodbaye!")
+            break
+        if 'wikipedia' in query:
+            speak ('searching wkipedia...')
+            query = query.replace("wikipedia", " ")
+            results = wikipedia.summary(query, sentences=2) #sentences means red no. of line on wikipedia
+            speak("According to Wikipedia")
+            print(results)
+            speak(results)
+            #  browser action add .com or links to open sites like
+        elif'open youtube' in query:
+            webbrowser.open("youtube.com")
+        elif'open google' in query:
+            webbrowser.open('google.com')    
+        elif'open facebook' in query:
+            webbrowser.open('facebook.com')     
+        elif'open instagram' in query:
+            webbrowser.open('instagram.com') 
+        elif'open whatsapp' in query:
+            webbrowser.open('whatsapp.com')  
+
+        elif'play music' in query:
+            music_dir = 'C:\\Users\\Lenovo\\Music\\Playlists'    
+            songs = os.listdir(music_dir)
+            random.shuffle(songs)
+            print(songs)
+            os.startfile(os.path.join(music_dir,songs[0]))  
+
+        elif'the time' in query:
+            strTime=datetime.datetime.now().strftime("%H:%M:%S")
+            speak(f"the time is {strTime}")   
+
+        elif'open code' in query:
+           codePath ='C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe'
+           os.startfile(codePath) 
+        
+        elif'open ready' in query:
+           readyPath = "C:\\Program Files\\Lenovo\\Ready For Assistant\\ReadyFor.exe"
+           os.startfile(readyPath)
+           
+        elif'open game' in query:
+            genshinpath = "C:\\Program Files\\Genshin Impact\\launcher.exe" 
+            os.startfile(genshinpath)  
+        # elif 'email to navi' in query:
+        #     try:
+        #         speak("what should i say?") 
+        #         content = takecommand ()
+        #         to ="harshmanhas203@gmail.com"
+        #         sendEmail(to,content)
+        #         speak("Email has been sent!")
+        #     except Exception as e:
+        #         print(e)
+        #         speak("Sorry sir i am not able to send this email ")
+           
 
 
 
