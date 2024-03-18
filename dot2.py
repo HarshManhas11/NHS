@@ -112,7 +112,16 @@ if __name__ == "__main__":
             os.startfile(bravepath)  
         elif'open photos' in query:
             photopath = "C:\\Users\\Lenovo\\OneDrive\\Pictures\\Saved Pictures"
-            os.startfile(photopath)  
+            os.startfile(photopath)
+        elif'open chrome' in query:
+            chromedpath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+            os.startfile(chromedpath)     
+        elif'open word' in query:
+                wordpath='C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs'
+                os.startfile(wordpath)
+        elif'open edge' in query:
+            edgepath=   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+            os.startfile(edgepath)    
         # elif'open media player' in query:
         #     mediapath = "C:\\Program Files (x86)\\K-Lite Codec Pack\\Media Player Classic\\mpc-hc.exe"
         #     os.startfile(mediapath)  
